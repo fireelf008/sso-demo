@@ -14,8 +14,7 @@
     <form method="post" action="/subLogin">
         用户名：<input type="text" id="username" name="username" /><br>
         密&nbsp;&nbsp;码：<input type="password" id="password" name="password" /><br>
-        <input type="hidden" id="s" name="s" value="<%=request.getAttribute("s")%>" />
-        <input type="hidden" id="r" name="r" value="<%=request.getAttribute("r")%>" />
+        <input type="hidden" id="return" name="return" value="<%=request.getAttribute("return")%>" />
         <input type="submit" value="提交" />
     </form>
 </body>

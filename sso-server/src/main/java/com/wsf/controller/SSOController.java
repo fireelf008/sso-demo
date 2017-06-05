@@ -58,7 +58,8 @@ public class SSOController {
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
 
-        String returnStr = EncodeUtils.aesDecoder(request.getParameter("return"), KEY);
+        String aesReturnStr = request.getParameter("return");
+        String returnStr = EncodeUtils.aesDecoder(aesReturnStr, KEY);
         JSONObject returnObj = JSONObject.parseObject(returnStr);
         String sessionUrl = returnObj.getString("sessionUrl");
         String returnUrl = returnObj.getString("returnUrl");
@@ -102,9 +103,7 @@ public class SSOController {
                 }
             }
         }
-
-        request.setAttribute("s", sessionUrl);
-        request.setAttribute("r", returnUrl);
+        request.setAttribute("return", aesReturnStr);
         return "login";
     }
 
@@ -113,8 +112,11 @@ public class SSOController {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String sessionUrl = request.getParameter("s");
-        String returnUrl = request.getParameter("r");
+        String aesReturnStr = request.getParameter("return");
+        String returnStr = EncodeUtils.aesDecoder(aesReturnStr, KEY);
+        JSONObject returnObj = JSONObject.parseObject(returnStr);
+        String sessionUrl = returnObj.getString("sessionUrl");
+        String returnUrl = returnObj.getString("returnUrl");
 
         //用户登录验证
         if ("root".equals(username) && "root".equals(password)) {
@@ -154,8 +156,7 @@ public class SSOController {
             }
         }
 
-        request.setAttribute("s", sessionUrl);
-        request.setAttribute("r", returnUrl);
+        request.setAttribute("return", returnStr);
         return "login";
     }
 }
